@@ -49,7 +49,7 @@ def mfcc_feat_extraction(audio_list, order_1=True, order_2=True, mfccdim=13, sav
 def main():
     parser = argparse.ArgumentParser(description='paras for making data')
     parser.add_argument('--groudtruth', type=str, help="path to _MERLIon-CCS-Challenge_Development-Set_Language-Labels_v001.csv")
-    parser.add_argument('--save', type=str, help='path to the folder of ground truth and predition rttm')
+    parser.add_argument('--save', type=str, help='path to the folder to save speech chunks')
     parser.add_argument('--audio', type=str, help='path to test audio folder')
     parser.add_argument('--feattxt', type=str, help='path to feats.txt')
 
