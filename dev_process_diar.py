@@ -101,4 +101,5 @@ def main():
             mfcc_feat_extraction(audio_seg_list, save_txt=save_feat_txt)
 
 
-
+if __name__ == "__main__":
+    main()
