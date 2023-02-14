@@ -16,7 +16,7 @@ def resample(root, target_sr=16000):
     sf.write(root, y_resample, target_sr, subtype='PCM_16')
 
 
-def mfcc_feat_extraction(audio_list, order_1=True, order_2=True, mfccdim=13, save_txt=None, lang=None):
+def mfcc_feat_extraction(audio_list, order_1=True, order_2=True, mfccdim=13, save_txt=None):
     """
     :param audio_list: a python dictionary {audio_seg: seg_path}
     :param order_1: path of pre-trained XLSR-53 model, default model/xlsr_53_56k.pt
@@ -24,28 +24,27 @@ def mfcc_feat_extraction(audio_list, order_1=True, order_2=True, mfccdim=13, sav
     :param mfccdim: dimension of mfcc dim, default 13 (39 after being stacked with its 1st and 2nd orders)
     :return: a python dictionary {audio_seg: features}
     """
-    audio_list = audio_list
+    audio_list = list(audio_dict.keys())
     with open(save_txt, 'w') as f:
         for i in tqdm(range(len(audio_list))):
             audio = audio_list[i]
             save_name = audio.replace(".wav",".npy").replace(".flac",".npy")
-            try:
-                audioarray, sr_ = librosa.load(path=audio, sr=None)
-                preemphasis = 0.97
-                preemphasized = np.append(audioarray[0], audioarray[1:] - preemphasis * audioarray[:-1])
-                mfcc = librosa.feature.mfcc(y = preemphasized, sr = sr_, n_mfcc=mfccdim,
-                                            hop_length=int(sr_ / 100), n_fft=int(sr_ / 40))
-                if order_1 and order_2:
-                    delta1 = librosa.feature.delta(mfcc, order=1)
-                    delta2 = librosa.feature.delta(mfcc, order=2)
-                    mfcc_features = np.vstack((mfcc, delta1, delta2))
-                else:
-                    mfcc_features = mfcc
-                np.save(save_name, mfcc_features)
-                f.write(f"{save_name} {lang}\n")
-            except:
-                print(f"{audio} is too short to extract mfcc feats")
 
+            audioarray, sr_ = librosa.load(path=audio, sr=None)
+            preemphasis = 0.97
+            preemphasized = np.append(audioarray[0], audioarray[1:] - preemphasis * audioarray[:-1])
+            mfcc = librosa.feature.mfcc(y = preemphasized, sr = sr_, n_mfcc=mfccdim,
+                                        hop_length=int(sr_ / 100), n_fft=int(sr_ / 40))
+            if order_1 and order_2:
+                delta1 = librosa.feature.delta(mfcc, order=1)
+                delta2 = librosa.feature.delta(mfcc, order=2)
+                mfcc_features = np.vstack((mfcc, delta1, delta2))
+            else:
+                mfcc_features = mfcc
+            np.save(save_name, mfcc_features)
+            f.write(f"{save_name} {audio_dict[audio]}\n")
+
+            
 def main():
     parser = argparse.ArgumentParser(description='paras for making data')
     parser.add_argument('--groundtruth', type=str, help="path to _MERLIon-CCS-Challenge_Development-Set_Language-Labels_v001.csv")
@@ -88,7 +87,7 @@ def main():
         for k, v in audio_seg_list.items():
             ff.write(f"{k.replace('.wav','npy')} {v}\n")
     
-    mfcc_feat_extraction(list(audio_seg_list.keys()))
+    mfcc_feat_extraction(audio_seg_list, save_txt=save_feat_txt)
     print("Completed processing")
 
 
