@@ -46,9 +46,10 @@ def mfcc_feat_extraction(audio_list, order_1=True, order_2=True, mfccdim=13, sav
 def main():
     parser = argparse.ArgumentParser(description='paras for making data')
     parser.add_argument('--groundtruth', type=str, help="path to _MERLIon-CCS-Challenge_Development-Set_Language-Labels_v001.csv")
-    parser.add_argument('--save_g', type=str, help='path to the folder of ground truth rttm')
-    parser.add_argument('--save_p', type=str, help='path to the folder of predition rttm')
-    parser.add_argument('--save_f', type=str, help='path to the folder of chunks & feats')
+    parser.add_argument('--save_g', type=str, help='path to the folder to save ground truth rttm')
+    parser.add_argument('--save_p', type=str, help='path to the folder to save predition rttm')
+    parser.add_argument('--save_f', type=str, help='path to the folder to save chunks & feats')
+    parser.add_argument('--audio', type=str, help='path to the folder to save chunks & feats')
     args = parser.parse_args()
     
     file_path = args.groundtruth
@@ -67,6 +68,8 @@ def main():
         os.mkdir(save_g_path)
     if not os.path.exists(save_p_path):
         os.mkdir(save_p_path)
+    if not os.path.exists(save_f_path):
+        os.mkdir(save_f_path)
     for audio_ in audio_list:
         audio_rttm_path = os.path.join(save_g_path, os.path.split(audio_)[-1].replace('.wav', '_ground_truth_rttm.txt') )
         with open(audio_rttm_path, 'w') as fw:
@@ -101,4 +104,5 @@ def main():
             mfcc_feat_extraction(audio_seg_list, save_txt=save_feat_txt)
 
 
-
+if __name__ == "__main__":
+    main()
