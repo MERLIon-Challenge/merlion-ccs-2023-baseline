@@ -68,6 +68,8 @@ def main():
         os.mkdir(save_g_path)
     if not os.path.exists(save_p_path):
         os.mkdir(save_p_path)
+    if not os.path.exists(save_f_path):
+        os.mkdir(save_f_path)
     for audio_ in audio_list:
         audio_rttm_path = os.path.join(save_g_path, os.path.split(audio_)[-1].replace('.wav', '_ground_truth_rttm.txt') )
         with open(audio_rttm_path, 'w') as fw:
