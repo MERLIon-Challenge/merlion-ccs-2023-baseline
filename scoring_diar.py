@@ -126,12 +126,6 @@ class language_diarization_error_rate:
                 ref_index_list += [2] * (item[1] - item[0] + 1)
 
         total_time = 0
-        # for item in ref_list:
-        #     if item[-1] == language_id:
-        #         total_time += (item[1] - item[0])
-        
-        
-        #total_error = np.sum(np.array(pred_index_list) != np.array(ref_index_list))
         total_error = 0
         time_list = self.time_dict[self.file_name]
         for time in time_list:
@@ -143,8 +137,6 @@ class language_diarization_error_rate:
                 if label == language_id:
                     total_time += 1
     
-        #language_diarization_error_rate = np.sum(np.array(pred_index_list) != np.array(ref_index_list)) / total_time
-
         return total_error, total_time
 
     def save_result(self):
