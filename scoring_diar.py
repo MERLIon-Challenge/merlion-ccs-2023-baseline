@@ -1,20 +1,39 @@
 import argparse
 import os
+import pandas as pd
 import numpy as np
 
 # parser = argparse.ArgumentParser()
 # parser.add_argument("--predicting_file", type=str, default=None, required=False, help = "Please input predicting file path")
 # parser.add_argument("--ground_truth", type=str, default=None, required=False, help = "please input ground truth path")
+# parser.add_argument("--excel_file", type=str, default=None, required=False, help = "please input ground truth excel_file path")
 # parser.add_argument("--result_output", type=str, default=None, required=False, help = "please input output file path")
 # args = vars(parser.parse_args())
 
+
+def read_excel_file(file_path):
+    result = {}
+    data = pd.read_excel(file_path)
+    for index, row in data.iterrows():
+        temp = row.tolist()
+        file_name = temp[0].replace('.wav','.txt')
+
+        if file_name not in result:
+            result[file_name] = [(int(temp[1]), int(temp[2]))]
+        else:
+            result[file_name].append((int(temp[1]), int(temp[2])))
+    
+    return result
+
+
 class language_diarization_error_rate:
-    def __init__(self, predicting_file, ground_truth, result_output):
+    def __init__(self, predicting_file, ground_truth, result_output, time_dict, file_name):
         self.predicting_file = predicting_file  # predicting file path, txt file 
         self.ground_truth = ground_truth        # ground truth file path, txt file
         self.result_output = result_output      # output truth file path
+        self.time_dict = time_dict
+        self.file_name = file_name
 
-    
     def load_file(self, file):
         no_nonspeech_index_list = []
 
@@ -107,12 +126,23 @@ class language_diarization_error_rate:
                 ref_index_list += [2] * (item[1] - item[0] + 1)
 
         total_time = 0
-        for item in ref_list:
-            if item[-1] == language_id:
-                total_time += (item[1] - item[0])
+        # for item in ref_list:
+        #     if item[-1] == language_id:
+        #         total_time += (item[1] - item[0])
         
-        total_error = np.sum(np.array(pred_index_list) != np.array(ref_index_list))
-
+        
+        #total_error = np.sum(np.array(pred_index_list) != np.array(ref_index_list))
+        total_error = 0
+        time_list = self.time_dict[self.file_name]
+        for time in time_list:
+            total_error += np.sum(np.array(pred_index_list)[time[0]:time[1]] != np.array(ref_index_list)[time[0]:time[1]])
+        
+        for time in time_list:
+            new_list = ref_index_list[time[0]:time[1]]
+            for label in new_list:
+                if label == language_id:
+                    total_time += 1
+    
         #language_diarization_error_rate = np.sum(np.array(pred_index_list) != np.array(ref_index_list)) / total_time
 
         return total_error, total_time
@@ -126,38 +156,39 @@ class language_diarization_error_rate:
     
         return English_error, English_time, Mandarin_error, Mandarin_time
 
+
 # def main(args):
 #     predicting_folder_path = args['predicting_file'] # should input the predict file folder
 #     ground_truth_folder_path = args['ground_truth'] # should input reference file folder
+#     excel_file_path = args['excel_file']
 #     result_output_path = args['result_output']
-#
+#     
 #     pred_file_set = os.listdir(predicting_folder_path) # same pair of file should have same file name
 #     #true_file_set = os.listdir(ground_truth_folder_path)
 #     total_english_error = 0
 #     total_english_time = 0
 #     total_mandarin_error = 0
 #     total_mandarin_time = 0
-#
+#     time_dict = read_excel_file(excel_file_path)
+# 
 #     for file in pred_file_set:
 #         pred_path = os.path.join(predicting_folder_path, file)
 #         true_path = os.path.join(ground_truth_folder_path, file)
-#
-#         LDER = language_diarization_error_rate(pred_path, true_path, result_output_path)
+# 
+#         LDER = language_diarization_error_rate(pred_path, true_path, result_output_path, time_dict, file)
 #         English_error, English_time, Mandarin_error, Mandarin_time = LDER.save_result()
-#
+# 
 #         total_english_error += English_error
 #         total_english_time += English_time
 #         total_mandarin_error += Mandarin_error
 #         total_mandarin_time += Mandarin_time
-#
+#     
 #     Total_English_LDER = total_english_error / total_english_time
 #     Total_Mandarin_LDER = total_mandarin_error / total_mandarin_time
-#     Total_all_LDER = (total_mandarin_error+total_english_error) / (total_english_time+total_mandarin_time)
-#
+# 
 #     with open(os.path.join(result_output_path,'total_result'), 'a+') as f:
-#         f.write(f'Total English LDER : {Total_English_LDER}\n')
-#         f.write(f'Total Mandarin LDER : {Total_Mandarin_LDER}\n')
-#         f.write(f'Total LDER : {Total_all_LDER}\n')
-#
+#         f.write('Total English LDER :' + " " + str(Total_English_LDER) + '\n')
+#         f.write('Total Mandarin LDER :' + " " + str(Total_Mandarin_LDER) + '\n')
+# 
 # if __name__=='__main__':
 #     main(args)
