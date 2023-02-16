@@ -39,11 +39,14 @@ Example to run diarization_validation.py (this is for our baseline system)
 
 
 If you have already computed the RTTMs for Task 2 (Language Diarization), the language diarization error rate and individual English and Mandarin error rates across the entire dataset can be computed by uncommenting the code in scoring_diar.py and running the following command: 
->python scoring_diar.py --predicting_file /your_folder_saved_prediction_rttm_files --ground_truth /your_folder_saved_ground_truth_rttm --result_output /expected_path_to_save_result
+>python scoring_diar.py --predicting_file /your_folder_saved_prediction_rttm_files --ground_truth /your_folder_saved_ground_truth_rttm --excel_file /path_to_evaluated_regions_file --result_output /expected_path_to_save_result
 
 where:
 * --predicting_file is the folder path containing all the predicted RTTM files named according to the audio filenames (e.g., predicted RTTM file of 123.wav should be 123.txt in the prediction folder)
 * --ground_truth is the folder path containing all ground truth RTTM files with the same audio filename (e.g., ground truth RTTM file of 123.wav should be 123.txt in the prediction folder
+* --excel_file is the path that points to the Excel file that contains the timestamps (in milliseconds) of the evaluated regions for each audio recording.
 * --result_output is the folder to save the results to. 
+
+Note that the Excel file that contains the timestamps of evaluated regions is only released for the MERLIon CCS Development set. It is made available to the registered participants of the MERLIon CCS challenge. For the evaluation set in Task 2 (Language Diarization), the timestamps of evaluated regions will not be made available, so as to delink the information between Task 1 (Language Identification) and Task 2 (Language Diarization). 
 
 We have also provided preprocess_train.py for training data processing (just in case you need), the dev_process.py for task 1 and dev_process_diar.py for task 2 to help develop your model.
