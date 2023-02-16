@@ -76,7 +76,7 @@ def main():
             end = float(row[3])
             data_ = AudioSegment.from_file(os.path.join(audio_dir, audio_name))
             data_seg = data_[start:end]
-            save_name = f"{save_path}/{audio_name.strip('.wav')}_{chunk_name}.wav"
+            save_name = f"{save_path}/{audio_name.strip('.wav')}_{start}_{end}.wav"
             data_seg.export(save_name, format='wav')
             if row[5] == "English":
                 audio_seg_list[save_name] = 0
