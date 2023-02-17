@@ -57,7 +57,8 @@ where:
 ## Evaluated Regions File
 Note that the Excel file that contains the timestamps of evaluated regions is only released for the MERLIon CCS Development set (Dev-Set_Evaluated-Regions_v0001.xlsx). It is made available to the registered participants of the MERLIon CCS challenge via Huawei Cloud. 
 <br> If you are unable to locate it, please contact us at merlion.challenge@gmail.com. 
-For the evaluation set in Task 2 (Language Diarization), the timestamps of evaluated regions will not be made available, so as to delink the information between Task 1 (Language Identification) and Task 2 (Language Diarization). 
+<br>
+<br>For the evaluation set in Task 2 (Language Diarization), the timestamps of evaluated regions will not be made available, so as to delink the information between Task 1 (Language Identification) and Task 2 (Language Diarization). 
 
 ## Preprocessing scripts
 We have also provided preprocess_train.py for training data processing (just in case you need), the dev_process.py for task 1 and dev_process_diar.py for task 2 to help develop your model.
