@@ -44,9 +44,10 @@ If you have already computed the RTTMs for Task 2 (Language Diarization), the la
 where:
 * --predicting_file is the folder path containing all the predicted RTTM files named according to the audio filenames (e.g., predicted RTTM file of 123.wav should be 123.txt in the prediction folder)
 * --ground_truth is the folder path containing all ground truth RTTM files with the same audio filename (e.g., ground truth RTTM file of 123.wav should be 123.txt in the prediction folder
-* --excel_file is the path that points to the Excel file that contains the timestamps (in milliseconds) of the evaluated regions for each audio recording.
+* --excel_file is the path that points to the Excel file that contains the timestamps (in milliseconds) of the evaluated regions for each audio recording. 
 * --result_output is the folder to save the results to. 
 
-Note that the Excel file that contains the timestamps of evaluated regions is only released for the MERLIon CCS Development set. It is made available to the registered participants of the MERLIon CCS challenge. For the evaluation set in Task 2 (Language Diarization), the timestamps of evaluated regions will not be made available, so as to delink the information between Task 1 (Language Identification) and Task 2 (Language Diarization). 
+Note that the Excel file that contains the timestamps of evaluated regions is only released for the MERLIon CCS Development set (Dev-Set_Evaluated-Regions_v0001.xlsx). It is made available to the registered participants of the MERLIon CCS challenge via Huawei Cloud. If you are unable to locate it, please contact us at merlion.challenge@gmail.com. 
+For the evaluation set in Task 2 (Language Diarization), the timestamps of evaluated regions will not be made available, so as to delink the information between Task 1 (Language Identification) and Task 2 (Language Diarization). 
 
 We have also provided preprocess_train.py for training data processing (just in case you need), the dev_process.py for task 1 and dev_process_diar.py for task 2 to help develop your model.
