@@ -1,7 +1,9 @@
-# MERLIon CCS Baseline System
+# MERLIon CCS Challenge Baseline System
 
+## Development Results
 Result and description of baseline system for MERLIon CCS Challenge [here](https://github.com/MERLIon-Challenge/merlion-ccs-2023/blob/master/readme.md#baseline-system).
 
+## Training Script
 Example command to run the training script:
 >python train_conformer.py --dim 39 --train /home/challenge_feat_all_train.txt --test /home/devset_feats.txt --warmup 5000 --epochs 
 
@@ -10,6 +12,9 @@ The challenge_feat_all_train.txt is formatted as:
 >chunk_2_feature.npy 1  
 
 where 0 and 1 are language label indexes denoting English and Mandarin respectively.  
+
+
+## Scoring Script for Task 1 (Language Identification)
 
 Example command to compute Equal Error Rate for Task 1 (Language Identification), i.e., compute_eer_bac.py:
 >python compute_eer_bac.py --valid /your_utterance_to_language_index.txt --score /your_utterance_to_prediction.txt --trial /path_to_save_trial.txt
@@ -33,11 +38,13 @@ Second format:
 >
 where the first language prediction score is for English followed by the language prediction score for Mandarin.  
 
+## Scoring Script for Task 2 (Language Diarization)
 
+### Diarization Validation 
 Example to run diarization_validation.py (this is for our baseline system)  
 >python diarization_validation.py --model /home/merlion/model.ckpt --audio /home/MERLIon-CCS-Challenge_Development-Set_v001/_CONFIDENTIAL/_audio/ --save /home/devset_diar/
 
-
+### Scoring RTTM files
 If you have already computed the RTTMs for Task 2 (Language Diarization), the language diarization error rate and individual English and Mandarin error rates across the entire dataset can be computed by uncommenting the code in scoring_diar.py and running the following command: 
 >python scoring_diar.py --predicting_file /your_folder_saved_prediction_rttm_files --ground_truth /your_folder_saved_ground_truth_rttm --excel_file /path_to_evaluated_regions_file --result_output /expected_path_to_save_result
 
@@ -47,7 +54,9 @@ where:
 * --excel_file is the path that points to the Excel file that contains the timestamps (in milliseconds) of the evaluated regions for each audio recording. 
 * --result_output is the folder to save the results to. 
 
+## Evaluated Regions File
 Note that the Excel file that contains the timestamps of evaluated regions is only released for the MERLIon CCS Development set (Dev-Set_Evaluated-Regions_v0001.xlsx). It is made available to the registered participants of the MERLIon CCS challenge via Huawei Cloud. If you are unable to locate it, please contact us at merlion.challenge@gmail.com. 
 For the evaluation set in Task 2 (Language Diarization), the timestamps of evaluated regions will not be made available, so as to delink the information between Task 1 (Language Identification) and Task 2 (Language Diarization). 
 
+## Preprocessing scripts
 We have also provided preprocess_train.py for training data processing (just in case you need), the dev_process.py for task 1 and dev_process_diar.py for task 2 to help develop your model.
