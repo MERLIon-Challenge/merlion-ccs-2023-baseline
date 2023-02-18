@@ -28,7 +28,7 @@ def load_file(score, trial):
         else:
             nontarget_score.append(score_all[ind_])
     score_all = np.array(score_all)
-    return np.array(target_score), np.array(nontarget_score), np.reshape(score_all, (2,-1))
+    return np.array(target_score), np.array(nontarget_score), np.reshape(score_all, (-1, 2)).T
 
 
 def pavx(y):
